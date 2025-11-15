@@ -33,8 +33,9 @@ pip install claude-explore
 ## Quick Start
 
 ```bash
-# Explore a repository
+# Explore a repository (options can come before URL)
 claude-explore https://github.com/user/repo
+claude-explore --skip-permissions https://github.com/user/repo
 
 # Explore a subdirectory
 claude-explore https://github.com/user/repo/tree/main/src/core
@@ -53,8 +54,10 @@ claude-explore info
 
 ### Explore a Repository
 
+The default action is to explore - just pass a URL directly:
+
 ```bash
-# Basic usage
+# Basic usage (no 'explore' subcommand needed!)
 claude-explore https://github.com/anthropics/anthropic-sdk-python
 
 # Explore a specific subdirectory
@@ -69,8 +72,11 @@ claude-explore --skip-permissions https://github.com/user/repo
 # Pass additional Claude arguments
 claude-explore --claude-args "--debug --verbose" https://github.com/user/repo
 
-# Combine multiple options
+# Combine multiple options (flags before URL)
 claude-explore --skip-permissions --no-update https://github.com/user/repo
+
+# You can also use the explicit 'explore' subcommand if you prefer
+claude-explore explore --skip-permissions https://github.com/user/repo
 ```
 
 Supported URL formats:
@@ -241,6 +247,31 @@ Show workspace manager information and disk usage.
 
 ## Advanced Usage
 
+### Shell Aliases
+
+Create convenient aliases for your common workflows:
+
+```bash
+# Add to ~/.bashrc or ~/.zshrc
+
+# Always skip permissions when exploring
+alias clauded-explore='claude-explore --skip-permissions'
+
+# Explore with debug mode enabled
+alias claude-debug='claude-explore --claude-args "--debug"'
+
+# Explore without updating (faster for repeat visits)
+alias claude-cached='claude-explore --no-update'
+```
+
+Usage:
+```bash
+# Use your alias
+clauded-explore https://github.com/user/repo
+
+# Expands to: claude-explore --skip-permissions https://github.com/user/repo
+```
+
 ### Custom Workspace Directory
 
 Use a different base directory for workspaces:
@@ -262,6 +293,9 @@ claude-explore clean --workspace-dir /mnt/data/claude-workspaces
 claude-explore https://github.com/user/interesting-repo
 # Claude opens, ask your questions
 # Exit when done
+
+# With your alias (always skip permissions)
+clauded-explore https://github.com/user/interesting-repo
 ```
 
 **Regular cleanup routine:**

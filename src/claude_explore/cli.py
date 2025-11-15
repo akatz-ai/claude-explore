@@ -13,8 +13,13 @@ from .workspace import WorkspaceManager
 
 @click.group(invoke_without_command=True)
 @click.version_option(version=__version__, prog_name='claude-explore')
+@click.argument('repo_url', required=False)
+@click.option('--skip-permissions', is_flag=True, help='Launch Claude with --dangerously-skip-permissions')
+@click.option('--claude-args', help='Additional arguments to pass to Claude')
+@click.option('--no-update', is_flag=True, help='Skip git pull if workspace exists')
+@click.option('--workspace-dir', type=click.Path(), help='Custom workspace base directory')
 @click.pass_context
-def cli(ctx):
+def cli(ctx, repo_url, skip_permissions, claude_args, no_update, workspace_dir):
     """Ephemeral workspace manager for exploring GitHub repositories with Claude Code.
 
     Clone GitHub repositories to temporary workspaces and explore them with Claude.
@@ -22,20 +27,30 @@ def cli(ctx):
 
     Examples:
 
-        # Explore a repository
+        # Explore a repository (default action)
         claude-explore https://github.com/user/repo
+
+        # Explore with permissions skipped
+        claude-explore --skip-permissions https://github.com/user/repo
 
         # Explore a subdirectory
         claude-explore https://github.com/user/repo/tree/main/src/core
 
-        # List active workspaces
+        # Use subcommands explicitly
         claude-explore list
-
-        # Clean up old workspaces
         claude-explore clean --days 7
+        claude-explore resume <workspace-id>
     """
-    # If no command provided, show help
-    if ctx.invoked_subcommand is None:
+    # If a repo URL is provided without a subcommand, invoke explore
+    if repo_url and ctx.invoked_subcommand is None:
+        ctx.invoke(explore,
+                   repo_url=repo_url,
+                   skip_permissions=skip_permissions,
+                   claude_args=claude_args,
+                   no_update=no_update,
+                   workspace_dir=workspace_dir)
+    elif ctx.invoked_subcommand is None:
+        # No URL and no subcommand, show help
         click.echo(ctx.get_help())
 
 
