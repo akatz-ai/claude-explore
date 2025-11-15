@@ -62,6 +62,15 @@ claude-explore https://github.com/anthropics/anthropic-sdk-python/tree/main/src/
 
 # Skip git pull if workspace exists
 claude-explore --no-update https://github.com/user/repo
+
+# Launch Claude with --dangerously-skip-permissions
+claude-explore --skip-permissions https://github.com/user/repo
+
+# Pass additional Claude arguments
+claude-explore --claude-args "--debug --verbose" https://github.com/user/repo
+
+# Combine multiple options
+claude-explore --skip-permissions --no-update https://github.com/user/repo
 ```
 
 Supported URL formats:
@@ -103,6 +112,12 @@ Found 3 session(s):
 ```bash
 # Resume a previous exploration (use ID from 'list' command)
 claude-explore resume a1b2c3d4
+
+# Resume with permissions skipped
+claude-explore resume --skip-permissions a1b2c3d4
+
+# Resume with additional Claude args
+claude-explore resume --claude-args "--debug" a1b2c3d4
 ```
 
 ### Clean Up Workspaces
@@ -185,6 +200,8 @@ Explore a GitHub repository.
 **Options:**
 - `--no-update`: Skip git pull if workspace exists
 - `--workspace-dir PATH`: Use custom workspace base directory
+- `--skip-permissions`: Launch Claude with `--dangerously-skip-permissions`
+- `--claude-args TEXT`: Additional arguments to pass to Claude (e.g., `"--debug --verbose"`)
 
 ### `claude-explore list`
 
@@ -203,6 +220,8 @@ Resume a previous exploration session.
 
 **Options:**
 - `--workspace-dir PATH`: Use custom workspace base directory
+- `--skip-permissions`: Launch Claude with `--dangerously-skip-permissions`
+- `--claude-args TEXT`: Additional arguments to pass to Claude (e.g., `"--debug --verbose"`)
 
 ### `claude-explore clean`
 

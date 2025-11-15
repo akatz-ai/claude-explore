@@ -43,7 +43,9 @@ def cli(ctx):
 @click.argument('repo_url')
 @click.option('--no-update', is_flag=True, help='Skip git pull if workspace exists')
 @click.option('--workspace-dir', type=click.Path(), help='Custom workspace base directory')
-def explore(repo_url: str, no_update: bool, workspace_dir: str):
+@click.option('--skip-permissions', is_flag=True, help='Launch Claude with --dangerously-skip-permissions')
+@click.option('--claude-args', help='Additional arguments to pass to Claude (e.g., "--debug --verbose")')
+def explore(repo_url: str, no_update: bool, workspace_dir: str, skip_permissions: bool, claude_args: str):
     """Explore a GitHub repository with Claude Code.
 
     REPO_URL can be:
@@ -94,9 +96,17 @@ def explore(repo_url: str, no_update: bool, workspace_dir: str):
             )
             sys.exit(1)
 
+        # Build Claude command with flags
+        claude_cmd = ['claude']
+        if skip_permissions:
+            claude_cmd.append('--dangerously-skip-permissions')
+        if claude_args:
+            # Parse additional args (simple split, handles quoted args via shell)
+            claude_cmd.extend(claude_args.split())
+
         # Launch Claude
         os.chdir(work_dir)
-        subprocess.run(['claude'])
+        subprocess.run(claude_cmd)
 
     except ValueError as e:
         click.secho(f"Error: {e}", fg='red', err=True)
@@ -170,7 +180,9 @@ def clean(days: int, force: bool, workspace_dir: str):
 @cli.command()
 @click.argument('workspace_id')
 @click.option('--workspace-dir', type=click.Path(), help='Custom workspace base directory')
-def resume(workspace_id: str, workspace_dir: str):
+@click.option('--skip-permissions', is_flag=True, help='Launch Claude with --dangerously-skip-permissions')
+@click.option('--claude-args', help='Additional arguments to pass to Claude (e.g., "--debug --verbose")')
+def resume(workspace_id: str, workspace_dir: str, skip_permissions: bool, claude_args: str):
     """Resume exploration of a previous workspace.
 
     WORKSPACE_ID is the identifier from 'claude-explore list'.
@@ -222,12 +234,19 @@ def resume(workspace_id: str, workspace_dir: str):
         )
         sys.exit(1)
 
+    # Build Claude command with flags
+    claude_cmd = ['claude']
+    if skip_permissions:
+        claude_cmd.append('--dangerously-skip-permissions')
+    if claude_args:
+        claude_cmd.extend(claude_args.split())
+
     # Launch Claude
     click.echo(f"\nLaunching Claude Code...")
     click.echo("(Exit Claude to return to this terminal)\n")
 
     os.chdir(work_dir)
-    subprocess.run(['claude'])
+    subprocess.run(claude_cmd)
 
 
 @cli.command()
