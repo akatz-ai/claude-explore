@@ -113,7 +113,8 @@ def explore(repo_url: str, no_update: bool, workspace_dir: str, skip_permissions
             sys.exit(1)
 
         # Build Claude command with flags
-        claude_cmd = ['claude']
+        claude_path = shutil.which('claude')
+        claude_cmd = [claude_path]
         if skip_permissions:
             claude_cmd.append('--dangerously-skip-permissions')
         if claude_args:
@@ -251,7 +252,8 @@ def resume(workspace_id: str, workspace_dir: str, skip_permissions: bool, claude
         sys.exit(1)
 
     # Build Claude command with flags
-    claude_cmd = ['claude']
+    claude_path = shutil.which('claude')
+    claude_cmd = [claude_path]
     if skip_permissions:
         claude_cmd.append('--dangerously-skip-permissions')
     if claude_args:
