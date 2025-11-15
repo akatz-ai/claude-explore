@@ -12,7 +12,7 @@ dependencies = [
     "click>=8.2.1",
 ]
 authors = [
-    {name = "akatzfey"}
+    {name = "akatz-ai"}
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
