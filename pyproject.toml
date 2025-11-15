@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "claude-explore"
-version = "0.1.0"
+version = "0.1.1"
 description = "Ephemeral workspace manager for exploring GitHub repositories with Claude Code"
 readme = "README.md"
 license = {text = "MIT"}

@@ -3,6 +3,7 @@
 import os
 import sys
 import subprocess
+import shutil
 from pathlib import Path
 import click
 
@@ -296,15 +297,7 @@ def info(workspace_dir: str):
 
 def _claude_exists() -> bool:
     """Check if claude command exists."""
-    try:
-        subprocess.run(
-            ['which', 'claude'],
-            check=True,
-            capture_output=True
-        )
-        return True
-    except subprocess.CalledProcessError:
-        return False
+    return shutil.which('claude') is not None
 
 
 def main():
