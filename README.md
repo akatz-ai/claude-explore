@@ -33,12 +33,12 @@ pip install claude-explore
 ## Quick Start
 
 ```bash
-# Explore a repository (options can come before URL)
-claude-explore https://github.com/user/repo
-claude-explore --skip-permissions https://github.com/user/repo
+# Explore a repository
+claude-explore explore https://github.com/user/repo
+claude-explore explore --skip-permissions https://github.com/user/repo
 
 # Explore a subdirectory
-claude-explore https://github.com/user/repo/tree/main/src/core
+claude-explore explore https://github.com/user/repo/tree/main/src/core
 
 # List active workspaces
 claude-explore list
@@ -54,29 +54,24 @@ claude-explore info
 
 ### Explore a Repository
 
-The default action is to explore - just pass a URL directly:
-
 ```bash
-# Basic usage (no 'explore' subcommand needed!)
-claude-explore https://github.com/anthropics/anthropic-sdk-python
+# Basic usage
+claude-explore explore https://github.com/anthropics/anthropic-sdk-python
 
 # Explore a specific subdirectory
-claude-explore https://github.com/anthropics/anthropic-sdk-python/tree/main/src/anthropic
+claude-explore explore https://github.com/anthropics/anthropic-sdk-python/tree/main/src/anthropic
 
 # Skip git pull if workspace exists
-claude-explore --no-update https://github.com/user/repo
+claude-explore explore --no-update https://github.com/user/repo
 
 # Launch Claude with --dangerously-skip-permissions
-claude-explore --skip-permissions https://github.com/user/repo
+claude-explore explore --skip-permissions https://github.com/user/repo
 
 # Pass additional Claude arguments
-claude-explore --claude-args "--debug --verbose" https://github.com/user/repo
+claude-explore explore --claude-args "--debug --verbose" https://github.com/user/repo
 
-# Combine multiple options (flags before URL)
-claude-explore --skip-permissions --no-update https://github.com/user/repo
-
-# You can also use the explicit 'explore' subcommand if you prefer
-claude-explore explore --skip-permissions https://github.com/user/repo
+# Combine multiple options
+claude-explore explore --skip-permissions --no-update https://github.com/user/repo
 ```
 
 Supported URL formats:
@@ -196,7 +191,7 @@ This enables:
 
 ## Command Reference
 
-### `claude-explore <repo_url>`
+### `claude-explore explore <repo_url>`
 
 Explore a GitHub repository.
 
@@ -255,21 +250,23 @@ Create convenient aliases for your common workflows:
 # Add to ~/.bashrc or ~/.zshrc
 
 # Always skip permissions when exploring
-alias clauded-explore='claude-explore --skip-permissions'
+alias cex='claude-explore explore'
+alias cex-skip='claude-explore explore --skip-permissions'
 
 # Explore with debug mode enabled
-alias claude-debug='claude-explore --claude-args "--debug"'
+alias cex-debug='claude-explore explore --claude-args "--debug"'
 
 # Explore without updating (faster for repeat visits)
-alias claude-cached='claude-explore --no-update'
+alias cex-cached='claude-explore explore --no-update'
 ```
 
 Usage:
 ```bash
 # Use your alias
-clauded-explore https://github.com/user/repo
+cex https://github.com/user/repo
+cex-skip https://github.com/user/repo
 
-# Expands to: claude-explore --skip-permissions https://github.com/user/repo
+# Expands to: claude-explore explore https://github.com/user/repo
 ```
 
 ### Custom Workspace Directory
@@ -278,7 +275,7 @@ Use a different base directory for workspaces:
 
 ```bash
 # Use custom directory
-claude-explore --workspace-dir /mnt/data/claude-workspaces https://github.com/user/repo
+claude-explore explore --workspace-dir /mnt/data/claude-workspaces https://github.com/user/repo
 
 # All commands support this option
 claude-explore list --workspace-dir /mnt/data/claude-workspaces
@@ -290,12 +287,12 @@ claude-explore clean --workspace-dir /mnt/data/claude-workspaces
 **Quick repository exploration:**
 ```bash
 # One-liner to explore a repo you found
-claude-explore https://github.com/user/interesting-repo
+claude-explore explore https://github.com/user/interesting-repo
 # Claude opens, ask your questions
 # Exit when done
 
 # With your alias (always skip permissions)
-clauded-explore https://github.com/user/interesting-repo
+cex-skip https://github.com/user/interesting-repo
 ```
 
 **Regular cleanup routine:**
@@ -323,7 +320,7 @@ claude
 
 **With claude-explore:**
 ```bash
-claude-explore https://github.com/user/repo/tree/main/src/core
+claude-explore explore https://github.com/user/repo/tree/main/src/core
 # Automatic cleanup after 7 days
 ```
 
@@ -353,7 +350,7 @@ MIT
 
 ## Related Tools
 
-- [llmd](https://github.com/user/llmd) - Generate LLM context from repositories
+- [llmd](https://github.com/akatz-ai/llmd) - Generate LLM context from repositories
 - [cc-conversation-search](https://github.com/akatz-ai/cc-conversation-search) - Search Claude Code conversations
 
 ## Tips
